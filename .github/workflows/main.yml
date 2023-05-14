@@ -1,0 +1,34 @@
+name: "Upload to Workshop"
+
+on:
+  schedule:
+  # 59th minute of the 4th hour UTC should be 11:59 EST - fridays(s)
+  - cron: "59 4 * * 6"
+  
+  # Trigger the workflow on push or pull request,
+  # but only for the following branch
+  push:
+    branches:
+      - '*hotfix*'
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: AnarkisGaming/workshop@v1
+        with:
+          appID: 108600
+          #publishedFileID -- workshop ID
+          publishedFileID: 2909488957
+          #changelog: 'log of changes'
+          path: Contents
+        env:
+          STEAM_ACCOUNT_NAME: ${{ secrets.STEAM_USERNAME }}
+          STEAM_PASSWORD: ${{ secrets.STEAM_PASSWORD  }}
+
+      # Runs a set of commands using the runners shell
+      #- name: Run a multi-line script
+      #  run: |
+       #   echo Add other actions to build,
+       #   echo test, and deploy your project.
